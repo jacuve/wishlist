@@ -2,7 +2,7 @@
 
 ## Create database :
 wishlist
-INSERT INTO wishers (name, password) VALUES ('Tom', 'tomcat');
+
 ## Create user:
 
 CREATE USER 'phpuser'@'localhost' IDENTIFIED BY 'phpuserpw'

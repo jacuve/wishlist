@@ -1,21 +1,21 @@
-#Wishlist project
+# Wishlist project
 
-##Create database :
+## Create database :
 wishlist
 INSERT INTO wishers (name, password) VALUES ('Tom', 'tomcat');
-##Create user:
+## Create user:
 
 CREATE USER 'phpuser'@'localhost' IDENTIFIED BY 'phpuserpw'
 
-##Creat table wishers : 
+## Creat table wishers : 
 
 CREATE TABLE wishers(id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, name CHAR(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL UNIQUE,password CHAR(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL)
 
-##Create table wishes:
+## Create table wishes:
 
 CREATE TABLE wishes(id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,wisher_id INT NOT NULL,description CHAR(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,due_date DATE,FOREIGN KEY (wisher_id) REFERENCES wishers(id))
 
-##Insert data :
+## Insert data :
 
 INSERT INTO wishers (name, password) VALUES ('Tom', 'tomcat');
 INSERT INTO wishers (name, password) VALUES ('Jerry', 'jerrymouse');

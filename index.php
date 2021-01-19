@@ -6,6 +6,8 @@
     <body>    
         <form name="wishlist" action="wishlist.php">
             Show wish list of :
+            <input type="text" name="user" value="" />
+            <input type="submit" value="Go" />
         </form>
     </body>
 </html>

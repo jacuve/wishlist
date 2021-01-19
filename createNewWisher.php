@@ -1,11 +1,4 @@
-<?php
-
-/** database connection credentials */
-$dbHost="localhost";
-//on MySql
-$dbXeHost="localhost/XE";
-$dbUsername="phpuser";
-$dbPassword="phpuserpw";
+<?php require 'includes/WishDB.php'; 
 
 /** other variables */
 $userNameIsUnique = true;
@@ -21,24 +14,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($_POST["user"]=="") {
         $userIsEmpty = true;
     }
-    /** Create database connection */
-    $con = mysqli_connect($dbHost, $dbUsername, $dbPassword);
-    if (!$con) {
-    exit('Connect Error (' . mysqli_connect_errno() . ') '
-    . mysqli_connect_error());
-    }
-    //set the default client character set
-    mysqli_set_charset($con, 'utf-8');
-    
-    /** Check whether a user whose name matches the "user" field already exists */
-    mysqli_select_db($con, "wishlist");
-    $user = mysqli_real_escape_string($con, $_POST["user"]);
-    $wisher = mysqli_query($con, "SELECT id FROM wishers WHERE name='".$user."'");
-    $wisherIDnum=mysqli_num_rows($wisher);
-    if ($wisherIDnum) {
+   
+    $wisherID = WishDB::getInstance()->get_wisher_id_by_name($_POST["user"]);
+
+    if ($wisherID) {
         $userNameIsUnique = false;
     }
-    
     if ($_POST["password"]=="") {
         $passwordIsEmpty = true;
     }
@@ -53,13 +34,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
      * If the data was validated successfully, add it as a new entry in the "wishers" database.
      * After adding the new entry, close the connection and redirect the application to editWishList.php.
      */
+    
+
     if (!$userIsEmpty && $userNameIsUnique && !$passwordIsEmpty && !$password2IsEmpty && $passwordIsValid) {
-        $password = mysqli_real_escape_string($con, $_POST['password']);
-        mysqli_select_db($con, "wishlist");
-        mysqli_query($con, "INSERT wishers (name, password) VALUES ('" . $user . "', '" . $password . "')");
-        mysqli_free_result($wisher);
-        mysqli_close($con);
-        header('Location: editWishList.php');
+        WishDB::getInstance()->create_wisher($_POST["user"], $_POST["password"]);
+        header('Location: editWishList.php' );
         exit;
     }
 

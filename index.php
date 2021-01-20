@@ -18,33 +18,67 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    </head>
-    <body>    
-        <form name="wishlist" action="wishlist.php">
-            Show wish list of :
-            <input type="text" name="user" value="" />
-            <input type="submit" value="Go" />
-        </form>
-        
+        <link href="wishlist.css" type="text/css" rel="stylesheet" media="all" />        
 
- <br>Still don't have a wish list?! <a href="createNewWisher.php">Create now</a>
-
-
-
-<form name="logon" action="index.php" method="POST" >
-  Username: <input type="text" name="user">
-  Password  <input type="password" name="userpassword">
-  <?php
-    if ($_SERVER['REQUEST_METHOD'] == "POST") {
-        if (!$logonSuccess){
-            echo "Invalid name and/or password";
+    <script>
+    function showHideLogonForm() {
+        if (document.all.logon.style.visibility == "visible"){
+            document.all.logon.style.visibility = "hidden";
+            document.all.myWishList.value = "My Wishlist >>";
+        }
+        else {
+            document.all.logon.style.visibility = "visible";
+            document.all.myWishList.value = "<< My Wishlist";
         }
     }
-    ?>
-  <input type="submit" value="Edit My Wish List">
-  
-</form>
+    function showHideShowWishListForm() {
+        if (document.all.wishList.style.visibility == "visible") {
+            document.all.wishList.style.visibility = "hidden";
+            document.all.showWishList.value = "Show Wish List of >>";
+        }
+        else {
+            document.all.wishList.style.visibility = "visible";
+            document.all.showWishList.value = "<< Show Wish List of";
+        }
+    }
+    </script>
 
+
+    </head>
+    <body>    
+        
+        <div class="showWishList">
+            <input type="submit" name="showWishList" value="Show Wish List of >>" onclick="javascript:showHideShowWishListForm()"/>
+
+            <form name="wishList" action="wishlist.php" method="GET" style="visibility:hidden">
+               <input type="text" name="user"/>
+               <input type="submit" value="Go" />
+            </form>
+        </div>
+
+
+        <br>Still don't have a wish list?! <a href="createNewWisher.php">Create now</a>
+        <div class="logon">
+            <input type="submit" name="myWishList" value="My Wishlist" onclick="javascript:showHideLogonForm()"/>
+            <form name="logon" action="index.php" method="POST" 
+                  style="visibility:<?php if ($logonSuccess) echo "hidden";
+                    else echo "visible";?>">
+                 
+              Username: <input type="text" name="user">
+              Password  <input type="password" name="userpassword">
+              <div class="error">
+              <?php
+                if ($_SERVER['REQUEST_METHOD'] == "POST") {
+                    if (!$logonSuccess){
+                        echo "Invalid name and/or password";
+                    }
+                }
+                ?>
+              </div>
+              <input type="submit" value="Edit My Wish List">
+
+            </form>
+        </div>
 
     </body>
 </html>

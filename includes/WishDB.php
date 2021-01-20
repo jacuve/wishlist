@@ -97,6 +97,25 @@ class WishDB extends mysqli {
             $dateParts = date_parse($date);
             return $dateParts["year"] * 10000 + $dateParts["month"] * 100 + $dateParts["day"];
         }
+    }
+    
+    public function update_wish($wishID, $description, $duedate) {
+        $description = $this->real_escape_string($description);
+        if ($duedate==''){
+            $this->query("UPDATE wishes SET description = '" . $description . "',
+                due_date = NULL WHERE id = " . $wishID);
+        } else {
+            $this->query("UPDATE wishes SET description = '" . $description .
+                "', due_date = " . $this->format_date_for_sql($duedate)
+                . " WHERE id = " . $wishID);
         }
+    }
+    
+    public function get_wish_by_wish_id ($wishID) {
+        return $this->query("SELECT id, description, due_date FROM wishes WHERE id = " . $wishID);
+    }
 
+    function delete_wish ($wishID){
+        $this->query("DELETE FROM wishes WHERE id = " . $wishID);
+    }
 }
